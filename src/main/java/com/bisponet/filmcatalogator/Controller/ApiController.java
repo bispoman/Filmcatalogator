@@ -2,7 +2,7 @@ package com.bisponet.filmcatalogator.Controller;
 
 import com.bisponet.filmcatalogator.Model.Movie;
 import com.bisponet.filmcatalogator.Service.FilmesService;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,13 +11,15 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-public class MovieController {
+@RequestMapping("/api")
+public class ApiController {
 
-    private FilmesService service = new FilmesService();
+    @Autowired
+    private FilmesService service;
 
     @GetMapping("/filmes")
-    public List<Movie> filmes(@RequestParam(value = "sort", defaultValue = "id") Sort sort) {
-        return service.getAllMovies(sort);
+    public List<Movie> filmes() {
+        return service.getAllMovies();
     }
 
     @GetMapping("/filmes/{id}")

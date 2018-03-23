@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Filmes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Filmes disponíveis:</h1>
+<table>
+    <tr th:each="movie: ${moviesList}">
+        <td th:text="'Título: ' + ${movie.title}"></td>
+        <td th:text="'Título Original: ' + ${movie.originalTitle}"></td>
+        <td> <img th:src="${movie.image}"/> </td>
+        <td th:text="'Sinopse: ' + ${movie.synopsis}"></td>
+        <td th:text="'Duração: ' + ${movie.duration/60} + ' minutos'"></td>
+        <td th:text="'Likes: ' + ${movie.likes}"></td>
+        <td th:text="'Atores no filme: ' + ${movie.actorsList}"></td>
+    </tr>
+</table>
+</body>
+</html>

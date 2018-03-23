@@ -2,23 +2,25 @@ package com.bisponet.filmcatalogator.Service;
 
 import com.bisponet.filmcatalogator.Model.Movie;
 import com.bisponet.filmcatalogator.Repository.MovieRepository;
+import com.bisponet.filmcatalogator.Util.ServiceUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-import java.text.Normalizer;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
+@Service
 public class FilmesService {
 
+    @Autowired
     private MovieRepository repository;
 
-    public List<Movie> getAllMovies(Sort sort) {
-        return repository.findAll(sort);
+    public List<Movie> getAllMovies() {
+        return repository.findAll();
     }
 
     public Optional<Movie> getMoviesById(String id) {
@@ -35,7 +37,7 @@ public class FilmesService {
             try {
 
                 Movie movie = new Movie(payload.get("title"), payload.get("originalTitle"),
-                        toSlug(payload.get("title")), payload.get("synopsis"), Integer.parseInt(payload.get("duration")),
+                        ServiceUtil.toSlug(payload.get("title")), payload.get("synopsis"), Integer.parseInt(payload.get("duration")),
                         payload.get("image"), Integer.parseInt(payload.get("likes")),
                         Boolean.parseBoolean(payload.get("published")), payload.get("actorsList"));
                 repository.save(movie);
@@ -48,13 +50,4 @@ public class FilmesService {
         return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
     }
 
-    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
-    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
-
-    private static String toSlug(String input) {
-        String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
-        String normalized = Normalizer.normalize(nowhitespace, Normalizer.Form.NFD);
-        String slug = NONLATIN.matcher(normalized).replaceAll("");
-        return slug.toLowerCase(Locale.ENGLISH);
-    }
 }
