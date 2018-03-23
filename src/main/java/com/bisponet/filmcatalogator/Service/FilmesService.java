@@ -25,10 +25,6 @@ public class FilmesService {
         return repository.findById(id);
     }
 
-    public Movie getMovieByTitle(String title) {
-        return repository.findByTitle(title);
-    }
-
     public Movie getMovieBySlug(String slug) {
         return repository.findBySlug(slug);
     }
